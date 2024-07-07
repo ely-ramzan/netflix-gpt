@@ -1,6 +1,8 @@
 
 # Features
   -   Login/Sign up:
+    - Header 
+    - Login Page
     - Sign in / Sign up form
     - redirect to browser page
 

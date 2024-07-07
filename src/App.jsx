@@ -1,9 +1,10 @@
 import React from 'react'
+import Body from './components/Body'
 
 const App = () => {
   return (
-    <div className='text-3xl text-red-800 py-10 font-bold text-center'>
-      Salam netflix
+    <div>
+      <Body/>
     </div>
   )
 }
