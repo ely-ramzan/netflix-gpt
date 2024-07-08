@@ -8,9 +8,7 @@ import { useDispatch } from "react-redux"
 import { addUser, removeUser } from "../utils/userSlice";
 
 const Body = () => {
-    const dispatch = useDispatch();
-    
-
+  
   const appRouter = createBrowserRouter([
     {
       path: "/",
@@ -21,24 +19,6 @@ const Body = () => {
       element: <Browse />,
     },
   ]);
-
-  useEffect(() => {
-    
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed-in or up
-        const {uid,email,displayName,photoURL} = user;
-
-        dispatch(addUser({uid:uid,email:email,displayName:displayName,photoURL:photoURL}))
-
-       
-      } else {
-        // User is signed out
-        dispatch(removeUser())
-        // navigate("/");
-      }
-    });
-  }, []);
 
   return (
     <div>

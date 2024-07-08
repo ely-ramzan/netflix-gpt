@@ -4,15 +4,17 @@ import validateForm from "../utils/validateForm";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword,updateProfile } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
   const [isSigneduP, setIsSignedUp] = useState(true);
-  const [isSingnedOut,setIsSignedOut] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
-  const navigate = useNavigate();
   const email = useRef(null);
   const password = useRef(null);
   const name = useRef(null);
+  const dispatch = useDispatch()
+
 
   const handleSign = () => {
     const validationResult = validateForm(
@@ -32,13 +34,13 @@ const Login = () => {
         .then((userCredential) => {
           // Signed up
           const user = userCredential.user;
-          console.log(user);
-          navigate("/browse");
-          setIsSignedOut(false);
           updateProfile(user, {
-            displayName: name.current.value , photoURL: "https://i.pinimg.com/736x/92/b4/e7/92b4e7c57de1b5e1e8c5e883fd915450.jpg"
+            displayName: name.current.value , photoURL: "https://i.pinimg.com/736x/92/b4/e7/92b4e7c57de1b5e1e8c5e883fd915450.jpg",
           }).then(() => {
             // Profile updated!
+            const {uid,email,displayName,photoURL} = auth.currentUser;
+            dispatch(addUser({uid:uid,email:email,displayName:displayName,photoURL:photoURL}));
+          
           }).catch((error) => {
             // An error occurred
           });
@@ -57,8 +59,6 @@ const Login = () => {
           // Signed in
           const user = userCredential.user;
           console.log(user);
-          navigate("/browse");
-          setIsSignedOut(false);
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -70,7 +70,7 @@ const Login = () => {
 
   return (
     <div className="">
-      <Header isSignedout={isSingnedOut} setIsSignedout={setIsSignedOut} />
+      <Header />
 
       <div className="absolute">
         <img
